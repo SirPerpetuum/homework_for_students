@@ -19,8 +19,30 @@ def get_employees_info() -> list[str]:
 
 def get_parsed_employees_info() -> list[dict[str, int | str]]:
     """Функция парсит данные, полученные из внешнего API и приводит их к стандартизированному виду."""
-    _ = get_employees_info()
-    parsed_employees_info = []
+    employee_data = get_employees_info()
+    parsed_employees_list = []
 
-    # Ваш код ниже
-    return parsed_employees_info
+    for record in employee_data:
+        elements = record.split(" ")
+        employee_info = {}
+
+        for index in range(0, len(elements), 2):
+            attribute = elements[index]
+            value = elements[index + 1]
+
+            if attribute == "id":
+                employee_info["id"] = int(value)
+            elif attribute == "name":
+                employee_info["name"] = value
+            elif attribute == "last_name":
+                employee_info["last_name"] = value
+            elif attribute == "age":
+                employee_info["age"] = int(value)
+            elif attribute == "position":
+                employee_info["position"] = value
+            elif attribute == "salary":
+                employee_info["salary"] = Decimal(value)
+
+        parsed_employees_list.append(employee_info)
+
+    return parsed_employees_list
